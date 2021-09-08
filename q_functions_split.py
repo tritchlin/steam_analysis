@@ -87,10 +87,10 @@ class db_interface:
         try:
             with sqlite3.connect(self.db_path) as conn:
                 dfs = pd.read_sql(self._query.query_text, conn, chunksize=chunk)
+            yield from dfs
         except Exception as e:
             raise e
         finally:
-            yield from dfs
             conn.close()
 
     def export_path(self, filetype: str, filename: str = None) -> str:
