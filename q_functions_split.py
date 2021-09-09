@@ -24,25 +24,7 @@ class db_query:
         return self._text
 
     def update_from_path(self, path: os.PathLike, update_text: bool = True):
-        def attempt_normalize_path(path) -> os.PathLike:
-            # attempt to normalize path input to potential query paths
-            if not os.path.exists(path):
-                alternates = [
-                    f"queries/{path}.sql",
-                    f"queries/{path}",
-                    f"{path}.sql"
-                ]
-                exists = False
-                for alt in alternates:
-                    if os.path.exists(alt):
-                        exists = True
-                        break
-                if exists:
-                    path = alt
-                else:
-                    raise FileNotFoundError(path)
-            return path
-        self._path = attempt_normalize_path(path)
+        self._path = db_query.attempt_normalize_path(path)
         if update_text:
             with open(self.query_path, 'r') as f:
                 self.update_from_text(f.read())
@@ -51,6 +33,26 @@ class db_query:
         if clear_path:
             self._path = None
         self._text = text
+        
+    @classmethod
+    def attempt_normalize_path(cls, path: os.PathLike):
+        # attempt to normalize path input to potential query paths
+        if not os.path.exists(path):
+            alternates = [
+                f"queries/{path}.sql",
+                f"queries/{path}",
+                f"{path}.sql"
+            ]
+            exists = False
+            for alt in alternates:
+                if os.path.exists(alt):
+                    exists = True
+                    break
+            if exists:
+                path = alt
+            else:
+                raise FileNotFoundError(path)
+        return path
         
 class db_interface:
     def __init__(self, db_path: os.PathLike):
@@ -131,4 +133,19 @@ class db_interface:
         
         df.to_json(json_path, orient='records')
         return json_path
+
+    def exec_script(self, filename: str) -> None:
+        """
+            for running scripts like 'create view', 'drop table', 'alter table', etc
+        """
+        try:
+            script_path = db_query.attempt_normalize_path(filename)
+            with sqlite3.connect(self.db_path) as conn:
+                with open(script_path, 'r') as f:
+                    res = conn.executescript(f.read())
+        except Exception as e:
+            raise e
+        finally:
+            #? do something with res? return result code?
+            conn.close()
 
