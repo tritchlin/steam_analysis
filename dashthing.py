@@ -6,10 +6,6 @@ import plotly.express as px
 
 import json
 
-# df = px.data.election()
-# geojson = px.data.election_geojson()
-# candidates = df.winner.unique()
-
 from q_functions_split import db_interface
 steamdb = db_interface('steamdata.db')
 
