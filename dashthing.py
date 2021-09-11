@@ -2,21 +2,31 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+import flask
 import plotly.express as px
 
 import json
 
+# df = px.data.election()
+# geojson = px.data.election_geojson()
+# candidates = df.winner.unique()
+
 from q_functions_split import db_interface
 steamdb = db_interface('steamdata.db')
 
-steamdb.set_query('genres')
+steamdb.set_query(text='select * from games_genres')
 genres = steamdb.get_df().Genre.unique()
 
 geojson = json.loads(open("resources\countries.geojson", 'r').read())
 
-app = dash.Dash(__name__)
+flaskapp = flask.Flask(__name__)
+dashapp = dash.Dash(__name__, server=flaskapp, url_base_pathname='/')
 
-app.layout = html.Div([
+@flaskapp.route('/')
+def asdf():
+    return flask.redirect(dashapp)
+
+dashapp.layout = html.Div([
     html.P("maperino:"),
     dcc.Dropdown(
         id='genre', 
@@ -28,23 +38,24 @@ app.layout = html.Div([
     dcc.Graph(id="choropleth"),
 ])
 
-@app.callback(
+@dashapp.callback(
     Output("choropleth", "figure"), 
     [Input("genre", "value")])
 def display_choropleth(genre):
-    print(genre)
-    query = 'select * from '
-    steamdb.set_query('vw_players_3l')
+    query = f"select * from vw_genre_ownership_by_country where genre = '{genre}';"
+    steamdb.set_query(text = query)
     df = steamdb.get_df()
+    max_value = df['genre_owners'].max()
+
     fig = px.choropleth_mapbox(
         df, 
         geojson=geojson, 
-        color='players',
-        locations="a3", 
+        color='genre_owners',
+        locations="countrycode", 
         featureidkey="id",
         center={"lat": 0.0, "lon": 0.0}, 
         zoom=1,
-        range_color=[0, 2221908],
+        range_color=[0, max_value],
         mapbox_style='open-street-map'
     )
     fig.update_layout(
@@ -53,4 +64,6 @@ def display_choropleth(genre):
 
     return fig
 
-app.run_server(debug=True)
+if __name__ == '__main__':
+    flaskapp.run(host='0.0.0.0', port='8000', debug=False)
+    # app.run_server(debug=True)

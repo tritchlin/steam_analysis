@@ -8,7 +8,7 @@ steamdb = db_interface('steamdata.db')
 # print(steamdb.get_df())
 # steamdb.get_csv()
 # steamdb.get_json()
-steamdb.exec_script('queries\create_games_countries.sql')
+steamdb.exec_script('queries\create vw_game_ownership.sql')
 # steamdb.exec_script('drop_indices.sql')
 # steamdb.csv_to_table('resources\countries_codes_and_coordinates.csv')
 
