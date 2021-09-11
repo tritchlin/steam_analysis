@@ -1,4 +1,4 @@
-from typing import Iterator
+from typing import Iterator, List
 import pandas as pd
 import sqlite3
 import os
@@ -133,6 +133,22 @@ class db_interface:
         
         df.to_json(json_path, orient='records')
         return json_path
+
+    def csv_to_table(self, filename: str, tablename: str = None, columns: List[str] = None):
+        try:
+            if not tablename:
+                tablename = pathlib.Path(filename).stem
+            if columns:
+                df = pd.read_csv(filename, names=columns, header=0)
+            else:
+                df = pd.read_csv(filename)
+
+            with sqlite3.connect(self.db_path) as conn:
+                df.to_sql(tablename, conn)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
 
     def exec_script(self, filename: str) -> None:
         """
