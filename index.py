@@ -17,7 +17,7 @@ app.layout = html.Div([
 ])
 
 # This callback changes the layout of the page based on the URL
-# For each layout read the current URL page "http://127.0.0.1:5000/pagename" and return the layout
+# For each layout read the current URL page "http://0.0.0.0:8000/pagename" and return the layout
 @app.callback(Output('page-content', 'children'), #this changes the content
               [Input('url', 'pathname')]) #this listens for the url in use
 def display_page(pathname):
@@ -30,7 +30,6 @@ def display_page(pathname):
     else:
         return '404' #If page not found return 404
 
-#Runs the server at http://127.0.0.1:5000/      
+#Runs the server at http://0.0.0.0:8000/      
 if __name__ == '__main__':
-    # app.run_server(port=5000, host= '127.0.01',debug=True)
     app.run_server(host='0.0.0.0', port='8000', debug=False)

@@ -11,16 +11,14 @@ import json
 
 #####################################
 # Add your data
+#####################################
+
 steamdb = db_interface('steamdata.db')
 
 steamdb.set_query(text='select * from games_genres')
 genres = steamdb.get_df().Genre.unique()
 
 geojson = json.loads(open("resources\countries.geojson", 'r').read())
-#####################################
-
-#example iris dataset
-# df = px.data.iris()
 
 #####################################
 # Styles & Colors
@@ -149,10 +147,6 @@ def display_bargraph(genre):
 #####################################
 # Create Page Layouts Here
 #####################################
-# dcc.Graph(id="choropleth"),
-# dcc.Graph(id='bar')
-### Layout 1
-
 first_card = dbc.CardBody(
         [
             dcc.Graph(id="choropleth")
