@@ -20,7 +20,7 @@ steamdb = db_interface('steamdata.db')
 steamdb.csv_to_table('queries\delete_genres.sql')
 
 # # --- RUN THESE IN ORDER FOR COUNTRY DATA ---
-# steamdb.csv_to_table('resources\countries_codes_and_coordinates.csv')
+steamdb.csv_to_table('resources\countries_codes_and_coordinates.csv')
 steamdb.exec_script('queries\create_games_countries.sql')
 steamdb.exec_script('queries\create_game_ownership_by_country.sql')
 

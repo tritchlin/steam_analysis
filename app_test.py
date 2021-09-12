@@ -1,18 +1,15 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import flask
+from flask.templating import render_template
 import plotly.express as px
 import plotly.graph_objects as go
-
 import json
-
-# df = px.data.election()
-# geojson = px.data.election_geojson()
-# candidates = df.winner.unique()
-
 from q_functions_split import db_interface
+from layouts import dashapp
 steamdb = db_interface('steamdata.db')
 
 steamdb.set_query(text='select * from games_genres')
@@ -24,21 +21,22 @@ flaskapp = flask.Flask(__name__)
 dashapp = dash.Dash(__name__, server=flaskapp, url_base_pathname='/')
 
 @flaskapp.route('/')
-def asdf():
+def home():
     return flask.redirect(dashapp)
 
-dashapp.layout = html.Div([
-    html.P("maperino:"),
-    dcc.Dropdown(
-        id='genre', 
-        options=[{'value': x, 'label': x} 
-                 for x in genres],
-        value=genres[0]
-        # ,labelStyle={'display': 'inline-block'}
-    ),
-    dcc.Graph(id="choropleth"),
-    dcc.Graph(id="bar")
-])
+# dashapp.layout = html.Div([
+#     html.P("maperino:"),
+#     dcc.Dropdown(
+#         id='genre', 
+#         options=[{'value': x, 'label': x} 
+#                  for x in genres],
+#         value=genres[0]
+#         # ,labelStyle={'display': 'inline-block'}
+#     ),
+#     dcc.Graph(id="choropleth"),
+#     dcc.Graph(id='bar')
+# ])
+
 
 @dashapp.callback(
     Output("choropleth", "figure"), 
