@@ -4,6 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import flask
 import plotly.express as px
+import plotly.graph_objects as go
 
 import json
 
@@ -36,6 +37,7 @@ dashapp.layout = html.Div([
         # ,labelStyle={'display': 'inline-block'}
     ),
     dcc.Graph(id="choropleth"),
+    dcc.Graph(id="bar")
 ])
 
 @dashapp.callback(
@@ -56,10 +58,34 @@ def display_choropleth(genre):
         center={"lat": 0.0, "lon": 0.0}, 
         zoom=1,
         range_color=[0, max_value],
-        mapbox_style='open-street-map'
+        mapbox_style='open-street-map',
+        title='Owners'
+
     )
     fig.update_layout(
-        margin={"r":0,"t":0,"l":0,"b":0}
+        margin={"r":0,"t":0,"l":0,"b":0},
+        coloraxis_colorbar=dict(title="Owners", x=-.06)
+    )
+    
+    return fig
+
+@dashapp.callback(
+    Output("bar", "figure"), 
+    [Input("genre", "value")])
+def display_bargraph(genre):
+    query = f"select * from vw_genre_ownership_by_country where genre = '{genre}';"
+    steamdb.set_query(text = query)
+    df = steamdb.get_df()
+    max_value = df['genre_owners'].max()
+    xval = df['countrycode']
+    yval = df['genre_owners']
+    # country = df['countrycode']
+
+    fig = px.bar(
+        df,
+        x=xval,
+        y=yval,
+        log_y=True,
     )
 
     return fig

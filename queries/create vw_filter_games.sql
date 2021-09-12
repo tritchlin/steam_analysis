@@ -1,3 +1,6 @@
+drop view if exists vw_filter_games;
+
+create view vw_filter_games as
 select *
 from vw_games
 where genre = 'Action'

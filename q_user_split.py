@@ -1,19 +1,27 @@
 from q_functions_split import db_interface, db_query
 
+# --- LEAVE ALONE ---
 steamdb = db_interface('steamdata.db')
-# input sql query file
-# steamdb.set_query(path='queries\create_games_countries.sql')
-# use one of these if you want to return a csv, or json. Then run file as is.
-# For memory issues, use parameter "chunk=number" example: steamdb.get_csv(chunk=1000)
+
+# --- FOR DF/CSV/JSON, PUT SQL FILE PATH HERE ---
+# steamdb.set_query()
+
+# --- RUN THIS TO GET DATAFRAME / TEST YOUR OUTPUT ---
 # print(steamdb.get_df())
+
+# --- RUN THIS TO GET CSV FILE FROM QUERY ---
+# For memory issues, use parameter "chunk=number" example: steamdb.get_csv(chunk=1000)
 # steamdb.get_csv()
+
+# --- RUN THIS TO GET JSON FILE FROM QUERY ---
 # steamdb.get_json()
-steamdb.exec_script('queries\create vw_game_ownership.sql')
-# steamdb.exec_script('drop_indices.sql')
+
+# --- RUN THESE IN ORDER FOR COUNTRY DATA ---
 # steamdb.csv_to_table('resources\countries_codes_and_coordinates.csv')
+steamdb.exec_script('queries\create_games_countries.sql')
+steamdb.exec_script('queries\create_game_ownership_by_country.sql')
 
-
-# testing stuff.
-# q = query('all_apps')
-# df = steamdb.df_from_query(q)
-# steamdb.df_from_query('good_games')
+# --- RUN THESE PRIOR TO DOING VISUALIZATION ---
+steamdb.exec_script('queries\create vw_games.sql')
+steamdb.exec_script('queries\create vw_game_ownership.sql')
+steamdb.exec_script('queries\create vw_genre_achievements.sql')
