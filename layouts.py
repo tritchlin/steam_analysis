@@ -156,10 +156,28 @@ pie_fig = px.pie(
     pie_df,
     values=pie_values,
     names=pie_labels,
-    height=250
-)
+    height=250,
+    color='Genre',
+    color_discrete_map={'RPG':'#00065b',
+                        'Action':'#440a56',
+                        'Racing':'#671852',
+                        'Adventure':'#85294d',
+                        'Strategy':'#a13e49',
+                        'Indie':'#b95444',
+                        'Free to Play':'#cf6d3f',
+                        'Stimulation':'#e28639',
+                        'Casual':'#f1a231',
+                        'Sports':'#fcc027',
+                        'Massively Multiplayer':'#ffdf18',
+                        'Early Access':'#ffff00'
+                        
+})
+
 
 pie_fig.update_layout(
+    title_text="Avg. Achievements Percentage per Genre",
+    # Add annotations in the center of the donut pies.
+    # annotations=[dict(text='GHG', x=0.18, y=0.5, font_size=20, showarrow=False),
     showlegend=False,
     margin={"r":0,"t":0,"l":0,"b":0},
 )
