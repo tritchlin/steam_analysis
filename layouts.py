@@ -44,8 +44,6 @@ CONTENT_STYLE = {
 #####################################
 # Create Auxiliary Components Here
 #####################################
-PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
-
 options = [{'value': x, 'label': x} for x in genres]
 # items = [dbc.DropdownMenuItem(i) for i in options] #remove curly brackets on this line
 
@@ -71,8 +69,8 @@ def nav_bar():
             html.A(
                 dbc.Row(
                     [
-                        dbc.Col(html.Img(src=PLOTLY_LOGO, height='30px')),
-                        dbc.Col(dbc.NavbarBrand('Steam Game Database', className='ml-2')),
+                        # dbc.Col(html.Img(src=PLOTLY_LOGO, height='30px')),
+                        dbc.Col(dbc.NavbarBrand('Steam Analysis Dashboard', className='ml-2')),
                     ],
                     align='center',
                     no_gutters=True,
@@ -106,11 +104,11 @@ def display_choropleth(genre):
         zoom=1,
         range_color=[0, max_value],
         mapbox_style='open-street-map',
-        height=250
+        height=225
     )
     fig.update_layout(
         margin={"r":0,"t":0,"l":0,"b":0},
-        coloraxis_colorbar=dict(title="Owners")
+        coloraxis_colorbar=dict(title=" ")
     )
     
     return fig
@@ -119,11 +117,12 @@ def display_choropleth(genre):
 @app.callback(
     Output("bar", "figure"), 
     [Input("genre", "value")])
+
 def display_bargraph(genre):
     query = f"select * from vw_genre_ownership_by_country where genre = '{genre}';"
     steamdb.set_query(text = query)
     df = steamdb.get_df()
-    max_value = df['genre_owners'].max()
+    
     xval = df['countrycode']
     yval = df['genre_owners']
     # country = df['countrycode']
@@ -133,7 +132,8 @@ def display_bargraph(genre):
         x=xval,
         y=yval,
         log_y=True,
-        height=250
+        height=225,
+        labels=dict(genre_owners=" ")
     )
 
     fig.update_layout(
@@ -144,31 +144,52 @@ def display_bargraph(genre):
     return fig
 
 #graph 3 - Melissa Chart
+pie_query = f"select * from vw_genre_achieve;"
+steamdb.set_query(text = pie_query)
+pie_df = steamdb.get_df()
+pie_labels = pie_df['Genre']
+pie_values = pie_df['achievements_percentages']
+pie_fig = px.pie(
+    pie_df, 
+    values=pie_values, 
+    names=pie_labels,
+    height=225
+)
 
+pie_fig.update_traces(textposition='inside', textinfo='percent+label')
+
+pie_fig.update_layout(
+    showlegend=False,
+    margin={"r":0,"t":0,"l":0,"b":0},
+)
 
 #####################################
 # Create Page Layouts Here
 #####################################
 first_card = dbc.CardBody(
         [
+            html.P("Video Game Sales by Country", className="card-title"),
             dcc.Graph(id="choropleth")
         ],
     ),
 
 second_card = dbc.CardBody(
         [
-            html.H5("Card title", className="card-title"),
-            html.P(
-                "This card also has some text content and not much else, but "
-                "it is twice as wide as the first card."
-            ),
-            dbc.Button("Go somewhere", color="primary"),
+            html.P("Achievement Completion by Genre", className="card-title"),
+            dcc.Graph(figure=pie_fig)
         ],
     ),
 
 third_card = dbc.CardBody(
         [
+            html.P("Video Game Sales by Country", className="card-title"),
             dcc.Graph(id='bar'),
+        ],
+    ),
+
+fourth_card = dbc.CardBody(
+        [
+            html.P("yee")
         ],
     ),
 
@@ -201,7 +222,7 @@ layout1 = dbc.Container(
                 ),
                 dbc.Col(
                     [
-                        dbc.Card(second_card),
+                        dbc.Card(fourth_card),
                     ],   
                     width=4,
                 ),
