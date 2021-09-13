@@ -152,7 +152,18 @@ steamdb.set_query(text = pie_query)
 pie_df = steamdb.get_df()
 pie_labels = pie_df['Genre']
 pie_values = pie_df['achievements_percentages']
-pie_fig = px.pie(pie_df, values=pie_values, names=pie_labels)
+pie_fig = px.pie(
+    pie_df,
+    values=pie_values,
+    names=pie_labels,
+    height=250
+)
+
+pie_fig.update_layout(
+    showlegend=False,
+    margin={"r":0,"t":0,"l":0,"b":0},
+)
+
 # @app.callback(
 #     Output("pie", "figure"), 
 #     [Input("genre", "value")])
