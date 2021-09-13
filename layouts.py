@@ -147,19 +147,25 @@ def display_bargraph(genre):
     return fig
 
 #graph 3 - melissa ( achievement by genre )
-@app.callback(
-    Output("pie", "figure"), 
-    [Input("genre", "value")])
-def display_linegraph(genre):
-    pie_query = f"select * from vw_genre_achieve where genre = '{genre}';"
-    steamdb.set_query(text = pie_query)
-    pie_df = steamdb.get_df()
-        # max_value = df['Genre'].max()
-    pie_labels = pie_df['Genre']
-    pie_values = pie_df['achievements_percentages']
+pie_query = f"select * from vw_genre_achieve;"
+steamdb.set_query(text = pie_query)
+pie_df = steamdb.get_df()
+pie_labels = pie_df['Genre']
+pie_values = pie_df['achievements_percentages']
+pie_fig = px.pie(pie_df, values=pie_values, names=pie_labels)
+# @app.callback(
+#     Output("pie", "figure"), 
+#     [Input("genre", "value")])
+# def display_linegraph(genre):
+#     pie_query = f"select * from vw_genre_achieve where genre = '{genre}';"
+#     steamdb.set_query(text = pie_query)
+#     pie_df = steamdb.get_df()
+#         # max_value = df['Genre'].max()
+#     pie_labels = pie_df['Genre']
+#     pie_values = pie_df['achievements_percentages']
 
 
-    pie_fig = px.pie(pie_df, values= pie_values, names= pie_labels)
+    # pie_fig = px.pie(pie_df, values= pie_values, names= pie_labels)
     # dcc.Graph(id='pie', figure=pie_fig)
 
     # fig.update_layout(
@@ -168,7 +174,7 @@ def display_linegraph(genre):
     # margin=dict(t=10,l=10,b=10,r=10)
 
         
-    return pie_fig
+# return pie_fig
     # country = df['countrycode']
 
 
@@ -183,7 +189,7 @@ first_card = dbc.CardBody(
 
 second_card = dbc.CardBody(
         [
-            dcc.Graph(id='pie'),
+            dcc.Graph(figure=pie_fig),
         ],
     ),
 
