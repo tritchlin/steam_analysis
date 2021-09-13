@@ -47,16 +47,16 @@ CONTENT_STYLE = {
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
 
 options = [{'value': x, 'label': x} for x in genres]
-items = [dbc.DropdownMenuItem(i) for i in options] #remove curly brackets on this line
+# items = [dbc.DropdownMenuItem(i) for i in options] #remove curly brackets on this line
 
 dropdown = dbc.Row(
     [
         dbc.Col(dcc.Dropdown(
-        id='genre', 
-        options=[{'value': x, 'label': x} 
-                 for x in genres],
-        value=genres[0]
-        ),
+            id='genre', 
+            options=[{'value': x, 'label': x} 
+                    for x in genres],
+            value=genres[0]
+            ),
         ),
     ],
     no_gutters=True,
@@ -86,7 +86,7 @@ def nav_bar():
     )   
     return navbar
 
-#graph 1
+#graph 1 - Choropleth Map
 @app.callback(
     Output("choropleth", "figure"), 
     [Input("genre", "value")])
@@ -115,7 +115,7 @@ def display_choropleth(genre):
     
     return fig
 
-#graph 2
+#graph 2 - Country Bar Graph
 @app.callback(
     Output("bar", "figure"), 
     [Input("genre", "value")])
@@ -142,6 +142,8 @@ def display_bargraph(genre):
     fig.update_yaxes(side="right")
 
     return fig
+
+#graph 3 - Melissa Chart
 
 
 #####################################

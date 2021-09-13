@@ -17,14 +17,14 @@ steamdb = db_interface('steamdata.db')
 # steamdb.get_json()
 
 # # --- RUN THIS TO DELETE NON-GAME GENRE ---
-steamdb.csv_to_table('queries\delete_genres.sql')
+# steamdb.csv_to_table('queries\delete_genres.sql')
 
 # # --- RUN THESE IN ORDER FOR COUNTRY DATA ---
-steamdb.csv_to_table('resources\countries_codes_and_coordinates.csv')
-steamdb.exec_script('queries\create_games_countries.sql')
-steamdb.exec_script('queries\create_game_ownership_by_country.sql')
+# steamdb.csv_to_table('resources\countries_codes_and_coordinates.csv')
+# steamdb.exec_script('queries\create_games_countries.sql')
+# steamdb.exec_script('queries\create_game_ownership_by_country.sql')
 
-# # --- RUN THESE PRIOR TO DOING VISUALIZATION ---
+# # # --- RUN THESE PRIOR TO DOING VISUALIZATION ---
 steamdb.exec_script('queries\create vw_games.sql')
 steamdb.exec_script('queries\create vw_game_ownership.sql')
 steamdb.exec_script('queries\create vw_genre_achievements.sql')

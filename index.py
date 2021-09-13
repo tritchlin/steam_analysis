@@ -1,4 +1,3 @@
-
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
@@ -6,7 +5,7 @@ from dash.dependencies import Input, Output
 from app import app, server 
 #import your navigation, styles and layouts from layouts.py here
 from layouts import nav_bar, layout1, layout2, CONTENT_STYLE 
-import callbacks
+# import callbacks
 
 # Define basic structure of app:
 # A horizontal navigation bar on the left side with page content on the right.

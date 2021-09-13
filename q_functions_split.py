@@ -164,4 +164,3 @@ class db_interface:
         finally:
             #? do something with res? return result code?
             conn.close()
-
