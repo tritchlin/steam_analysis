@@ -9,6 +9,7 @@ from q_functions_split import db_interface
 from dash.dependencies import Input, Output
 import json
 
+
 #####################################
 # Add your data
 #####################################
@@ -18,7 +19,10 @@ steamdb = db_interface('steamdata.db')
 steamdb.set_query(text='select * from games_genres')
 genres = steamdb.get_df().Genre.unique()
 
-geojson = json.loads(open("resources\countries.geojson", 'r').read())
+# geojson = json.loads(open("resources\countries.geojson", 'r').read())
+#  Mac 
+geojson = json.loads(open("resources/countries.geojson", 'r').read())
+
 
 #####################################
 # Styles & Colors
@@ -124,7 +128,7 @@ def display_bargraph(genre):
     steamdb.set_query(text = query)
     df = steamdb.get_df()
     max_value = df['genre_owners'].max()
-    xval = df['countrycode']
+    xval = df['genres']
     yval = df['genre_owners']
     # country = df['countrycode']
 
@@ -139,9 +143,33 @@ def display_bargraph(genre):
     fig.update_layout(
         margin={"r":0,"t":0,"l":0,"b":0},
     )
-    fig.update_yaxes(side="right")
-
+    fig.update_traces(textposition="bottom right")
     return fig
+
+#graph 3 - melissa ( achievement by genre )
+@app.callback(
+    Output("pie", "figure"), 
+    [Input("genre", "value")])
+def display_linegraph(genre):
+    pie_query = f"select * from vw_genre_achieve where genre = '{genre}';"
+    steamdb.set_query(text = pie_query)
+    pie_df = steamdb.get_df()
+        # max_value = df['Genre'].max()
+    pie_labels = pie_df['Genre']
+    pie_values = pie_df['achievements_percentages']
+
+
+    pie_fig = px.pie(pie_df, values= pie_values, names= pie_labels)
+    # dcc.Graph(id='pie', figure=pie_fig)
+
+    # fig.update_layout(
+    # showlegend=False,
+    # plot_bgcolor="white",
+    # margin=dict(t=10,l=10,b=10,r=10)
+
+        
+    return pie_fig
+    # country = df['countrycode']
 
 
 #####################################
@@ -155,12 +183,7 @@ first_card = dbc.CardBody(
 
 second_card = dbc.CardBody(
         [
-            html.H5("Card title", className="card-title"),
-            html.P(
-                "This card also has some text content and not much else, but "
-                "it is twice as wide as the first card."
-            ),
-            dbc.Button("Go somewhere", color="primary"),
+            dcc.Graph(id='pie'),
         ],
     ),
 
@@ -199,7 +222,7 @@ layout1 = dbc.Container(
                 ),
                 dbc.Col(
                     [
-                        dbc.Card(second_card),
+                        # dbc.Card(second_card),
                     ],   
                     width=4,
                 ),
