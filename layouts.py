@@ -203,12 +203,14 @@ layout1 = dbc.Container(
                         dbc.Card(first_card),
                     ],
                     width=8,
+                    align = "center",
                 ),
                 dbc.Col(
                     [
                         dbc.Card(second_card),
                     ],
                     width=4,
+                    align = "center",
                 ),
             ],
             # no_gutters=True,
@@ -219,13 +221,15 @@ layout1 = dbc.Container(
                     [
                         dbc.Card(third_card),
                     ],   
-                    width=8,
+                    width=6,
+                    align = "center",
                 ),
                 dbc.Col(
                     [
                         dbc.Card(fourth_card),
                     ],   
-                    width=4,
+                    width=6,
+                    align = "center",
                 ),
             ],
             # no_gutters=True,
