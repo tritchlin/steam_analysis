@@ -1,9 +1,9 @@
 ///// Code based on D3 as well as article by Nadieh Bremer at https://bl.ocks.org/nbremer/d2720fdaab1123df73f4806360a09c9e ////
 
 function onPageLoad() {
-	var margin = {left:90, top:90, right:90, bottom:90},
-		width = Math.min(window.innerWidth, 300) - margin.left - margin.right,
-		height = Math.min(window.innerWidth, 300) - margin.top - margin.bottom,
+	var margin = {left:70, top:70, right:70, bottom:70},
+		width = Math.min(window.innerWidth, 450) - margin.left - margin.right,
+		height = Math.min(window.innerWidth, 450) - margin.top - margin.bottom,
 		innerRadius = Math.min(width, height) * .39,
 		outerRadius = innerRadius * 1.1;
 
@@ -110,7 +110,7 @@ function onPageLoad() {
 	//Append the label names on the outside
 	outerArcs.append("text")
 	.each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
-	.attr("dy", ".35em")
+	.attr("dy", "0.05em")
 	.attr("class", "titles")
 	.attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 	.attr("transform", function(d) {
