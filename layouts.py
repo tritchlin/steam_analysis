@@ -189,7 +189,8 @@ third_card = dbc.CardBody(
 
 fourth_card = dbc.CardBody(
         [
-            html.P("yee")
+            html.P("Correlations of Relationships by Genre"),
+            html.Div(id="chordchart")
         ],
     ),
 
