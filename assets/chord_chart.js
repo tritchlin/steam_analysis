@@ -1,13 +1,13 @@
 ///// Code based on D3 as well as article by Nadieh Bremer at https://bl.ocks.org/nbremer/d2720fdaab1123df73f4806360a09c9e ////
 
 function onPageLoad() {
-	var margin = {left:70, top:70, right:70, bottom:70},
-		width = Math.min(window.innerWidth, 450) - margin.left - margin.right,
-		height = Math.min(window.innerWidth, 450) - margin.top - margin.bottom,
+	var margin = {left:30, top:30, right:30, bottom:30},
+		width = Math.min(window.innerWidth, 300) - margin.left - margin.right,
+		height = Math.min(window.innerWidth, 300) - margin.top - margin.bottom,
 		innerRadius = Math.min(width, height) * .39,
 		outerRadius = innerRadius * 1.1;
 
-	var Genres = ["RPG","Action","Racing","Adventure","Strategy","Indie","Free to Play",'Simulation',"Casual","Sports","MMO","Early Access"];
+	var Genres = ["RPG","ACT","RAC","ADV","STR","IND","F2P",'SIM',"CAS","SPO","MMO","EA"];
 	colors = ['#00065b', '#440a56', '#671852', '#85294d', '#a13e49', '#b95444', '#cf6d3f', '#e28639', '#f1a231', '#fcc027', '#ffdf18', '#ffff00']
 		
 	const matrix = [
@@ -110,7 +110,7 @@ function onPageLoad() {
 	//Append the label names on the outside
 	outerArcs.append("text")
 	.each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
-	.attr("dy", "0.05em")
+	.attr("dy", "0.005em")
 	.attr("class", "titles")
 	.attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 	.attr("transform", function(d) {

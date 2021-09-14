@@ -132,13 +132,17 @@ def display_bargraph(genre):
         x=xval,
         y=yval,
         log_y=True,
-        height=225,
+        height=300,
+        color='genre_owners',
+        color_discrete_sequence=px.colors.sequential.Plasma,
         labels=dict(genre_owners=" ")
     )
 
     fig.update_layout(
         margin={"r":0,"t":0,"l":0,"b":0},
+        coloraxis_showscale=False
     )
+
     fig.update_yaxes(side="right")
 
     return fig
@@ -153,7 +157,8 @@ pie_fig = px.pie(
     pie_df, 
     values=pie_values, 
     names=pie_labels,
-    height=225
+    height=225,
+    color_discrete_sequence=px.colors.sequential.Plasma
 )
 
 pie_fig.update_traces(textposition='inside', textinfo='percent+label')
@@ -221,14 +226,14 @@ layout1 = dbc.Container(
                     [
                         dbc.Card(third_card),
                     ],   
-                    width=6,
+                    width=8,
                     align = "center",
                 ),
                 dbc.Col(
                     [
                         dbc.Card(fourth_card),
                     ],   
-                    width=6,
+                    width=4,
                     align = "center",
                 ),
             ],

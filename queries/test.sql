@@ -1,1 +1,1 @@
-select * from Games_1 limit 100;
+select * from vw_genre_achieve;
