@@ -110,7 +110,7 @@ function onPageLoad() {
 	//Append the label names on the outside
 	outerArcs.append("text")
 	.each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
-	.attr("dy", "0.005em")
+	.attr("dy", "0.05em")
 	.attr("class", "titles")
 	.attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 	.attr("transform", function(d) {
